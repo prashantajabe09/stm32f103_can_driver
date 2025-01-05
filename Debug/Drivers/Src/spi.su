@@ -1,0 +1,6 @@
+../Drivers/Src/spi.c:15:6:spi_init	16	static
+../Drivers/Src/spi.c:104:6:nss_pin_toggle	16	static
+../Drivers/Src/spi.c:109:6:data_write	16	static
+../Drivers/Src/spi.c:114:6:waite_for_sr_flag_to_set	16	static
+../Drivers/Src/spi.c:119:6:spi_en_di	16	static
+../Drivers/Src/spi.c:131:9:get_sr_flag_status	16	static

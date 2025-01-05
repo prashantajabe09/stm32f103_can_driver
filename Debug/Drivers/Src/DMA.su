@@ -1,0 +1,11 @@
+../Drivers/Src/DMA.c:18:6:dmax_channel_init	16	static
+../Drivers/Src/DMA.c:60:6:dma_counter_set	16	static
+../Drivers/Src/DMA.c:66:6:dma_channel_en	16	static
+../Drivers/Src/DMA.c:74:6:dma1_channel6_interrupt_handling	16	static
+../Drivers/Src/DMA.c:82:6:dma1_channel7_interrupt_handling	16	static
+../Drivers/Src/DMA.c:91:6:dma1_channel4_interrupt_handling	16	static
+../Drivers/Src/DMA.c:112:6:dma1_channel5_interrupt_handling	16	static
+../Drivers/Src/DMA.c:125:6:DMA1_Channel4_IRQHandler	8	static
+../Drivers/Src/DMA.c:130:6:DMA1_Channel5_IRQHandler	8	static
+../Drivers/Src/DMA.c:135:6:DMA1_Channel6_IRQHandler	8	static
+../Drivers/Src/DMA.c:140:6:DMA1_Channel7_IRQHandler	8	static

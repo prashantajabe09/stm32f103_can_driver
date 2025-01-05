@@ -1,0 +1,2 @@
+../Drivers/Src/common.c:9:6:mcu_init	8	static
+../Drivers/Src/common.c:25:10:round_off	32	static
