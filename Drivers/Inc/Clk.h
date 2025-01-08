@@ -19,6 +19,17 @@
 #define APB2 2
 
 
+
+
+
+/*
+ * CSR Bit Position
+ */
+#define LSI_CLOCK_EN_BIT_POSITION_CSR 	 0
+#define LSI_CLOCK_READY_BIT_POSITION_CSR 1
+
+#define IS_LSI_CLOCK_READY (1 << LSI_CLOCK_READY_BIT_POSITION_CSR)
+
 /*
  * APB2 Peripheral Clock Enable macros
  */
@@ -27,7 +38,7 @@
 #define PORTB_CLOCK_EN				(1 << 3)
 #define PORTC_CLOCK_EN				(1 << 4)
 #define TIMER1_CLOCK_EN				(1 << 11)
-
+#define SPI1_CLOCK_EN				(1 << 12)
 /*
  * APB1 Peripheral Clock Enable Macros
  */
@@ -42,7 +53,7 @@
 /*
  * APB2 Macro to be passed to function to enable the peripheral clock
  */
-#define APB2_PERIPHERAL_CLOCK_EN (AFIO_CLOCK_EN | PORTA_CLOCK_EN | PORTB_CLOCK_EN | PORTC_CLOCK_EN | TIMER1_CLOCK_EN)
+#define APB2_PERIPHERAL_CLOCK_EN (AFIO_CLOCK_EN | PORTA_CLOCK_EN | PORTB_CLOCK_EN | PORTC_CLOCK_EN | TIMER1_CLOCK_EN | SPI1_CLOCK_EN)
 
 /*
  * APB1 Macro to be passed to function to enable the peripheral Clock
@@ -185,5 +196,6 @@ void apb2_peripheral_clock_en(uint32_t clock_en_parameter);
 void apb1_peripheral_clock_en(uint32_t clock_en_parameter);
 uint32_t apb_get_clock(uint8_t apb);
 uint32_t get_pll_clock(void);
+void lsi_clock_en(void);
 
 #endif /* INC_CLK_H_ */

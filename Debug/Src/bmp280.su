@@ -1,2 +1,2 @@
 ../Src/bmp280.c:11:9:read_id	16	static
-../Src/bmp280.c:16:6:write_data_polling	16	static
+../Src/bmp280.c:29:6:write_data_polling	16	static

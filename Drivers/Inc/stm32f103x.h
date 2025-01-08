@@ -33,7 +33,7 @@
 #define DMA1_BASEADDR						0x40020000
 #define DMA2_BASEADDR						0x40020400
 #define NVIC_BASEADDR						0xE000E100
-
+#define IWDG_BASEADDR						0x40003000
 
 #define EN	  1
 #define DI	  0
@@ -208,6 +208,12 @@ typedef struct{
 }spix_regdef_t;
 
 
+typedef struct{
+	uint32_t iwdg_kr;
+	uint32_t iwdg_pr;
+	uint32_t iwdg_rlr;
+	uint32_t iwdg_sr;
+}iwdg_regdef_t;
 
 typedef struct{
 	uint32_t ISER[8];
@@ -236,6 +242,7 @@ typedef struct{
 #define EXTI				((exti_regdef_t *)EXTI_BASEADDR)
 #define DMA1                ((dma1_regdef_t*)DMA1_BASEADDR)
 //#define DMA2				((dmax_regdef_t*)DMA2_BASEADDR)
+#define IWDG				((iwdg_regdef_t*)IWDG_BASEADDR)
 #define NVIC				((nvic_regdef_t*)NVIC_BASEADDR)
 #define NVIC_ISER0			((uint32_t*)0xE000E100)
 #define NVIC_ISER1			((uint32_t*)(0xE000E100 + 0x04))
@@ -266,6 +273,6 @@ typedef struct{
 #include <I2C.h>
 #include <DMA.h>
 #include <spi.h>
-
+#include <iwdg.h>
 
 #endif /* INC_STM32F103X_H_ */

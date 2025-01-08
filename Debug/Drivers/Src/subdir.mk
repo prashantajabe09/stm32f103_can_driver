@@ -13,6 +13,7 @@ C_SRCS += \
 ../Drivers/Src/Timer.c \
 ../Drivers/Src/UART.c \
 ../Drivers/Src/common.c \
+../Drivers/Src/iwdg.c \
 ../Drivers/Src/spi.c 
 
 OBJS += \
@@ -24,6 +25,7 @@ OBJS += \
 ./Drivers/Src/Timer.o \
 ./Drivers/Src/UART.o \
 ./Drivers/Src/common.o \
+./Drivers/Src/iwdg.o \
 ./Drivers/Src/spi.o 
 
 C_DEPS += \
@@ -35,6 +37,7 @@ C_DEPS += \
 ./Drivers/Src/Timer.d \
 ./Drivers/Src/UART.d \
 ./Drivers/Src/common.d \
+./Drivers/Src/iwdg.d \
 ./Drivers/Src/spi.d 
 
 
@@ -45,7 +48,7 @@ Drivers/Src/%.o Drivers/Src/%.su: ../Drivers/Src/%.c Drivers/Src/subdir.mk
 clean: clean-Drivers-2f-Src
 
 clean-Drivers-2f-Src:
-	-$(RM) ./Drivers/Src/Clk.d ./Drivers/Src/Clk.o ./Drivers/Src/Clk.su ./Drivers/Src/DMA.d ./Drivers/Src/DMA.o ./Drivers/Src/DMA.su ./Drivers/Src/GPIO.d ./Drivers/Src/GPIO.o ./Drivers/Src/GPIO.su ./Drivers/Src/I2C.d ./Drivers/Src/I2C.o ./Drivers/Src/I2C.su ./Drivers/Src/System.d ./Drivers/Src/System.o ./Drivers/Src/System.su ./Drivers/Src/Timer.d ./Drivers/Src/Timer.o ./Drivers/Src/Timer.su ./Drivers/Src/UART.d ./Drivers/Src/UART.o ./Drivers/Src/UART.su ./Drivers/Src/common.d ./Drivers/Src/common.o ./Drivers/Src/common.su ./Drivers/Src/spi.d ./Drivers/Src/spi.o ./Drivers/Src/spi.su
+	-$(RM) ./Drivers/Src/Clk.d ./Drivers/Src/Clk.o ./Drivers/Src/Clk.su ./Drivers/Src/DMA.d ./Drivers/Src/DMA.o ./Drivers/Src/DMA.su ./Drivers/Src/GPIO.d ./Drivers/Src/GPIO.o ./Drivers/Src/GPIO.su ./Drivers/Src/I2C.d ./Drivers/Src/I2C.o ./Drivers/Src/I2C.su ./Drivers/Src/System.d ./Drivers/Src/System.o ./Drivers/Src/System.su ./Drivers/Src/Timer.d ./Drivers/Src/Timer.o ./Drivers/Src/Timer.su ./Drivers/Src/UART.d ./Drivers/Src/UART.o ./Drivers/Src/UART.su ./Drivers/Src/common.d ./Drivers/Src/common.o ./Drivers/Src/common.su ./Drivers/Src/iwdg.d ./Drivers/Src/iwdg.o ./Drivers/Src/iwdg.su ./Drivers/Src/spi.d ./Drivers/Src/spi.o ./Drivers/Src/spi.su
 
 .PHONY: clean-Drivers-2f-Src
 

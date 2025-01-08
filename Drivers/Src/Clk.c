@@ -57,6 +57,8 @@ void clock_init(void)
 
 	apb1_peripheral_clock_en(APB1_PERIPHERAL_CLOCK_EN);
 
+	lsi_clock_en();
+
 }
 
 
@@ -344,6 +346,10 @@ uint32_t get_pll_clock(void)
 	return pll_out_clk;
 }
 
-
+void lsi_clock_en(void)
+{
+	RCC->CSR |= (1 << LSI_CLOCK_EN_BIT_POSITION_CSR);
+	while(!(RCC->CSR & IS_LSI_CLOCK_READY)){;}
+}
 
 #endif /* SRC_CLK_C_ */

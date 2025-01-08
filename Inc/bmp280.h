@@ -18,7 +18,7 @@
  *
  *
  */
-uint8_t read_id(uint8_t register_address);
+uint8_t read_id();
 void write_data_polling(uint8_t data);
 
 

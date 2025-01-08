@@ -6,6 +6,7 @@
 "./Drivers/Src/Timer.o"
 "./Drivers/Src/UART.o"
 "./Drivers/Src/common.o"
+"./Drivers/Src/iwdg.o"
 "./Drivers/Src/spi.o"
 "./Src/bmp280.o"
 "./Src/eeprom.o"

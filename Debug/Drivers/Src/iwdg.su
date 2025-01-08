@@ -1,0 +1,4 @@
+../Drivers/Src/iwdg.c:9:6:iwdg_init	4	static
+../Drivers/Src/iwdg.c:14:6:iwdg_start	4	static
+../Drivers/Src/iwdg.c:18:6:rl_update	4	static
+../Drivers/Src/iwdg.c:24:6:iwdg_update	4	static

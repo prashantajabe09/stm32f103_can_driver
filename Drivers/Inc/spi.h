@@ -165,18 +165,18 @@ typedef enum{
  * CR1 Bit Position Macros
  */
 
-#define BIDIMODE_EN_DI_BIT_POSITION 				15
-#define BIDIOE_EN_DI_BIT_POSITION				    14
-#define DATA_FRAME_FORMAT_BIT_POSITION 				11
-#define RXONLY_BIT_POSITION 						10
-#define SW_SALVE_MGMNT_BIT_POSITION					 9
-#define INTERNAL_SLAVE_SELECT_BIT_POSITION  		 8
-#define LSB_FIRST_BIT_POSITION  					 7
-#define SPI_EN_DI_BIT_POSTION					     6
-#define BAUD_RATE_CONTROL_BIT_POSITION 				 3
-#define MASTER_SELECTION_BIT_POSITION			     2
-#define CPOL_BIT_POSITION 						     1
-#define CPHA_BIT_POSITION							 0
+#define BIDIMODE_EN_DI_BIT_POSITION_CR1 				15
+#define BIDIOE_EN_DI_BIT_POSITION_CR1				    14
+#define DATA_FRAME_FORMAT_BIT_POSITION_CR1 				11
+#define RXONLY_BIT_POSITION_CR1 						10
+#define SW_SALVE_MGMNT_BIT_POSITION_CR1					 9
+#define INTERNAL_SLAVE_SELECT_BIT_POSITION_CR1  		 8
+#define LSB_FIRST_BIT_POSITION_CR1  					 7
+#define SPI_EN_DI_BIT_POSTION_CR1					     6
+#define BAUD_RATE_CONTROL_BIT_POSITION_CR1 				 3
+#define MASTER_SELECTION_BIT_POSITION_CR1			     2
+#define CPOL_BIT_POSITION_CR1 						     1
+#define CPHA_BIT_POSITION_CR1							 0
 
 /*
  * CR2 Bit Position Macros
@@ -207,6 +207,21 @@ typedef enum{
 #define RXNE_INTERRUPT_DI 			0
 #define RXNE_INTERRUPT_EN 			1
 
+/*
+ * Event Flag
+ */
+#define FLAG_RXNE				(1 << 0)
+#define FLAG_TXE				(1 << 1)
+#define FLAG_CHSIDE				(1 << 2)
+#define FLAG_UDR				(1 << 3)
+#define FLAG_CRC_ERR			(1 << 4)
+#define FLAG_MODF				(1 << 5)
+#define FLAG_OVR				(1 << 6)
+#define FLAG_BSY				(1 << 7)
+
+
+
+
 
 typedef struct{
 	uint16_t bi_di_mode:1; 		      // BIDIMODE
@@ -234,6 +249,8 @@ void data_write(spix_regdef_t *p_spix,uint32_t data);
 void waite_for_sr_flag_to_set(spix_regdef_t *p_spix,uint8_t flag);
 uint8_t get_sr_flag_status(spix_regdef_t *p_spix,uint8_t flag);
 void spi_en_di(spix_regdef_t *p_spix, uint8_t en_or_di);
-
+void ssi_pin_select(spix_regdef_t *p_spix,uint8_t value);
+uint8_t data_read(spix_regdef_t *p_spix);
+void spi_1_slave_select();
 
 #endif /* INC_SPI_H_ */

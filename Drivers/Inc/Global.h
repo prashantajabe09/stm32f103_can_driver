@@ -14,6 +14,8 @@
 #define NOT_APPLICABLE 0
 #define ENABLE 		   1
 #define DISABLE        0
+#define SET 		   1
+#define RESET          0
 
 /*
  * Global Variable

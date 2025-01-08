@@ -20,6 +20,7 @@
 #include <stdio.h>
 #include "stm32f103x.h"
 #include "eeprom.h"
+#include "bmp280.h"
 
 uint8_t temp;
 uint8_t i = 0;
@@ -28,19 +29,17 @@ uint8_t Bytes_to_read = 2;
 uint8_t Count_Bytes_Read = 0;
 uint8_t Flag_RepeatedStart = 0;
 
-
-
-
-
 #define LED_ON() 			io_set_out(IO_TEST_LED, HIGH);
 #define LED_OFF() 			io_set_out(IO_TEST_LED, LOW);
-
 
 int main(void)
 {
 
-
+	uint8_t bmp280_id;
 	mcu_init();
+	GPIOA->ODR |= (1 << 4);
+	bmp280_id = read_id();
+	LED_OFF();
 
 	while(1)
 	{
