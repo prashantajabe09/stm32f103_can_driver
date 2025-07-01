@@ -1,6 +1,0 @@
-../Drivers/Src/Timer.c:16:6:timer_channel_init	32	static
-../Drivers/Src/Timer.c:89:6:update_timer_x_channel	16	static
-../Drivers/Src/Timer.c:93:6:start_timer	16	static
-../Drivers/Src/Timer.c:99:6:disable_timer	16	static
-../Drivers/Src/Timer.c:104:9:get_timer_flag_status	16	static
-../Drivers/Src/Timer.c:111:6:TIM1_CC_IRQHandler	8	static

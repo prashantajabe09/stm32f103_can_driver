@@ -92,12 +92,21 @@ void usart_set_baudrate(usartx_regdef_t *p_usartx,uint32_t baudrate)
 	p_usartx->BRR |= div_fraction;
 }
 
+void uart_send_string(const char* s)
+{
+	usart_2_handle.tx_buffer = s;
+	usart_write_polling(&usart_2_handle);
+}
 
-
+void uart_sent_uint(uint32_t num)
+{
+	usart_2_handle.tx_buffer = (uint8_t*)&num;
+	usart_write_polling(&usart_2_handle);
+}
 void usart_write_polling(usart_handle *p_usart_handle)
 {
 
-	p_usart_handle->tx_buffer = tx_buffer_data;
+	//p_usart_handle->tx_buffer = tx_buffer_data;
 	usart_tx_en(p_usart_handle->add_of_usartx);
 	while (*p_usart_handle->tx_buffer != '\0')
 	{

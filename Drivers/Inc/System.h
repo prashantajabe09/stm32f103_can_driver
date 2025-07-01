@@ -11,5 +11,5 @@
 #include "stm32f103x.h"
 
 void nvic_en_irq(irqn_type irqn);
-
+void systick_init(void);
 #endif /* INC_SYSTEM_H_ */

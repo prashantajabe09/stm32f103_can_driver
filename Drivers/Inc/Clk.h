@@ -39,11 +39,13 @@
 #define PORTC_CLOCK_EN				(1 << 4)
 #define TIMER1_CLOCK_EN				(1 << 11)
 #define SPI1_CLOCK_EN				(1 << 12)
+#define ADC1_CLOCK_EN				(1 << 9)
 /*
  * APB1 Peripheral Clock Enable Macros
  */
 #define USART2_CLOCK_EN 			(1 << 17)
 #define I2C2_CLOCK_EN				(1 << 22)
+#define CAN_CLOCK_EN				(1 << 25)
 
 /*
  * AHB Peripheral Clock Enable Macro
@@ -53,12 +55,12 @@
 /*
  * APB2 Macro to be passed to function to enable the peripheral clock
  */
-#define APB2_PERIPHERAL_CLOCK_EN (AFIO_CLOCK_EN | PORTA_CLOCK_EN | PORTB_CLOCK_EN | PORTC_CLOCK_EN | TIMER1_CLOCK_EN | SPI1_CLOCK_EN)
+#define APB2_PERIPHERAL_CLOCK_EN (ADC1_CLOCK_EN | AFIO_CLOCK_EN | PORTA_CLOCK_EN | PORTB_CLOCK_EN | PORTC_CLOCK_EN | TIMER1_CLOCK_EN | SPI1_CLOCK_EN)
 
 /*
  * APB1 Macro to be passed to function to enable the peripheral Clock
  */
-#define APB1_PERIPHERAL_CLOCK_EN (USART2_CLOCK_EN | I2C2_CLOCK_EN)
+#define APB1_PERIPHERAL_CLOCK_EN (USART2_CLOCK_EN | I2C2_CLOCK_EN | CAN_CLOCK_EN)
 
 
 

@@ -41,8 +41,8 @@ typedef enum
 	IO_PWM_MOTORS_X 		= P0_8,
 	IO_SENSOR_IN_TEMP 		= P0_9,
 	IO_UNUSED_5 			= P0_10,
-	IO_UNUSED_6 			= P0_11,
-	IO_UNUSED_7 			= P0_12,
+	CAN_RX					= P0_11,
+	CAN_TX		 			= P0_12,
 	IO_UNUSED_8 			= P0_13,
 	IO_UNUSED_9 			= P0_14,
 	IO_UNUSED_10 			= P0_15,
@@ -111,6 +111,11 @@ typedef enum
 
 }io_config_e;
 
+typedef enum{
+	PULL_DOWN,
+	PULL_UP,
+	NO_PUPD,
+}io_pull_up_down_e;
 
 typedef enum{
 	OUT_STATE_LOW,
@@ -125,6 +130,7 @@ typedef enum{
 typedef struct{
 	io_mode_e mode;
 	io_config_e config;
+	io_pull_up_down_e pupd;
 }io_configuration;
 
 typedef enum{
@@ -146,11 +152,11 @@ typedef struct{
 //void gpio_init(GPIO_RegDef_t* port,uint8_t pin, uint8_t dir, uint8_t option);
 void io_init(void);
 void io_config(io_e io, io_configuration *config);
-void io_set_io_mode(io_e io, io_mode_e mode, io_config_e config);
+void io_set_io_mode(io_e io, io_mode_e mode, io_config_e config,io_pull_up_down_e pupd);
 void io_set_out(io_e io, io_out_e out);
 uint16_t io_get_in(io_e io);
 void io_interrupt_config(exti_configuration *config); // pass the structure
-
+void io_toggle(io_e io);
 void delay();
 
 #endif /* INC_GPIO_H_ */

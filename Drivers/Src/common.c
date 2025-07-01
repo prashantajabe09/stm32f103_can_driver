@@ -10,16 +10,13 @@ void mcu_init(void)
 {
 	clock_init();
 	io_init();
-	i2cx_init(I2C2,I2C2_CHANNEL);
+
 	uart_x_configure_parameter(&usart_2_handle);
 	usart_init(&usart_2_handle);
-	spi_init(SPI1,SPI_1);
-	timer_channel_init(TIMER1,TIMER_CHANNEL_1);
-	timer_channel_init(TIMER1,TIMER_CHANNEL_2);
-	dmax_channel_init(DMA1,CHANNEL_4);
-	dmax_channel_init(DMA1,CHANNEL_5);
-	dmax_channel_init(DMA1,CHANNEL_7);
-	dmax_channel_init(DMA1,CHANNEL_6);
+
+	hal_can_init(&can_configuration);
+
+	systick_init();
 
 }
 

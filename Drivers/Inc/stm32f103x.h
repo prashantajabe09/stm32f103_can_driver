@@ -8,6 +8,7 @@
 #ifndef INC_STM32F103X_H_
 #define INC_STM32F103X_H_
 
+
 #include <stdint.h>
 
 
@@ -29,15 +30,21 @@
 #define SPI1_BASEADDR						(0x40013000)
 #define SPI2_BASEADDR						(0x40003800)
 #define SPI3_BASEADDR						(0x40003C00)
+#define ADC1_BASEADDR						(0x40012400)
 //#define EXTI_BASEADDR						(0x40010400)
 #define DMA1_BASEADDR						0x40020000
 #define DMA2_BASEADDR						0x40020400
 #define NVIC_BASEADDR						0xE000E100
 #define IWDG_BASEADDR						0x40003000
-
+#define SYSTICK_BASEADDR					0xE000E010
+#define CAN1_BASEADDR						0x40006400
+#define CAN2_BASEADDR						0x40006800
 #define EN	  1
 #define DI	  0
 
+
+#define NO_OF_TX_MAILBOX 			3
+#define NO_OF_RX_MAILBOX			2
 typedef struct {
 	uint32_t CR;
 	uint32_t CFGR;
@@ -177,18 +184,40 @@ typedef struct{
 	dma1_channel_x_regdef dma_channel[7];
 }dma1_regdef_t;
 
+typedef struct{
+	uint32_t SR;
+	uint32_t CR1;
+	uint32_t CR2;
+	uint32_t SMPR[2];
+	uint32_t JOFR[4];
+	uint32_t HTR;
+	uint32_t LTR;
+	uint32_t SQR[3];
+	uint32_t JSQR;
+	uint32_t JDR[4];
+	uint32_t DR;
+}adc_x_regdef_t;
+
 typedef enum IRQn{
 	EXTI0_IRQn     				= 6,
 	EXTI1_IRQn     				= 7,
 	EXTI2_IRQn     				= 8,
 	EXTI3_IRQn     				= 9,
 	EXTI4_IRQn     				= 10,
+	DMA_CHANNEL_2_GLOBAL_IRQn	= 12,
+	DMA_CHANNEL_3_GLOBAL_IRQn	= 13,
 	DMA_CHANNEL_4_GLOBAL_IRQn   = 14,
 	DMA_CHANNEL_5_GLOBAL_IRQn 	= 15,
 	DMA_CHANNEL_6_GLOBAL_IRQn   = 16,
 	DMA_CHANNEL_7_GLOBAL_IRQn 	= 17,
+	ADC_1_2_IRQn				= 18,
+	CAN1_TX_IRQn				= 19,
+	CAN1_RX_0_IRQn				= 20,
+	CAN1_RX_1_IRQn				= 21,
+	CAN1_SCE_IRQn				= 22,
 	EXTI9_5_IRQn   				= 23,
 	I2C2_EV_IRQn				= 33,
+	SPI1_GLOBAL_IRQn			= 35,
 	EXTI10_15_IRQn 				= 40,
 	USART2_Global_IRQn 			= 38,
 	TIM1_CC_IRQn     			= 27,
@@ -220,9 +249,52 @@ typedef struct{
 }nvic_regdef_t;
 
 
+typedef struct{
+	uint32_t CSR;
+	uint32_t RVR;
+	uint32_t CVR;
+	uint32_t CALIB;
+}systick_regdef_t;
+
+typedef struct{
+	uint32_t MCR;
+	uint32_t MSR;
+	uint32_t TSR;
+	uint32_t RFxR[2];
+	uint32_t IER;
+	uint32_t ESR;
+	uint32_t BTR;
+	uint32_t RESERVED_1[88];
+	struct{
+		uint32_t TIxR;
+		uint32_t TDTxR;
+		uint32_t TDLxR;
+		uint32_t TDHxR;
+	}canx_tx_mailbox[NO_OF_TX_MAILBOX];
+	struct{
+		uint32_t RIxR;
+		uint32_t RDTxR;
+		uint32_t RDLxR;
+		uint32_t RDHxR;
+	}can_rx_mailbox[NO_OF_RX_MAILBOX];
+
+	uint32_t  RESERVED_2[12];
+	uint32_t FMR;
+	uint32_t FM1R;
+	uint32_t RESERVED_3;
+	uint32_t FS1R;
+	uint32_t RESERVED_4;
+	uint32_t FFA1R;
+	uint32_t RESERVED_5;
+	uint32_t FA1R;
+	uint32_t RESERVED_6[8];
+	union{
+		uint32_t u32;
+		uint16_t u16[2];
+	}FxRi[28];
 
 
-
+}can_regdef_t;
 
 #define RCC					((rcc_regdef_t*)RCC_BASEADDR)
 #define GPIOA				((gpio_regdef_t*)GPIO_BASEADDR)
@@ -241,8 +313,12 @@ typedef struct{
 #define TIMER1				((timerx_regdef_t *)0x40012C00)
 #define EXTI				((exti_regdef_t *)EXTI_BASEADDR)
 #define DMA1                ((dma1_regdef_t*)DMA1_BASEADDR)
+#define ADC1				((adc_x_regdef_t*)ADC1_BASEADDR)
+#define CAN1				((can_regdef_t*)CAN1_BASEADDR)
+#define CAN2				((can_regdef_t*)CAN2_BASEADDR)
 //#define DMA2				((dmax_regdef_t*)DMA2_BASEADDR)
 #define IWDG				((iwdg_regdef_t*)IWDG_BASEADDR)
+#define SYSTICK				((systick_regdef_t*)SYSTICK_BASEADDR)
 #define NVIC				((nvic_regdef_t*)NVIC_BASEADDR)
 #define NVIC_ISER0			((uint32_t*)0xE000E100)
 #define NVIC_ISER1			((uint32_t*)(0xE000E100 + 0x04))
@@ -267,12 +343,9 @@ typedef struct{
 #include <System.h>
 #include <GPIO.h>
 #include <UART.h>
-#include <Timer.h>
+#include <CAN.h>
 #include <Clk.h>
 #include <common.h>
-#include <I2C.h>
-#include <DMA.h>
-#include <spi.h>
-#include <iwdg.h>
+
 
 #endif /* INC_STM32F103X_H_ */

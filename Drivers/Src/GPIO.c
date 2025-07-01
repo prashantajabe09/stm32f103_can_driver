@@ -19,7 +19,7 @@ uint8_t port_number;
 #define IO_PORT_OFFSET 					(4u)
 #define IO_PORT_MASK 					(0x3u << IO_PORT_OFFSET)
 #define IO_PIN_MASK 					(0xFu)
-#define UNUSED_PIN_CONFIG 				{MODE_IO_DIR_OUTPUT_10MHZ,CONFIG_GENERAL_PURPOSE_OUTPUT_PUSHPULL}
+#define UNUSED_PIN_CONFIG 				{MODE_IO_DIR_OUTPUT_10MHZ,CONFIG_GENERAL_PURPOSE_OUTPUT_PUSHPULL,NO_PUPD}
 
 
 #define LED_ON() 			io_set_out(IO_TEST_LED, OUT_STATE_LOW);
@@ -43,30 +43,32 @@ void delay()
 }
 // TO DO: Configure the pins as you progress the code. Next configue for the UART then I2C.
 io_configuration io_initial_config[PORTS * PINS_PER_PORT] = {
-													  [P0_2] = {MODE_IO_DIR_OUTPUT_50MHZ,CONFIG_ALTERNATE_FUNCTION_OUTPUT_PUSHPULL},
-													  [P0_3] = {MODE_IO_DIR_INPUT,CONFIG_FLOATING_STATE},
-													  [P0_8] = {MODE_IO_DIR_OUTPUT_50MHZ,CONFIG_ALTERNATE_FUNCTION_OUTPUT_PUSHPULL},
-													  [P1_6] = {MODE_IO_DIR_INPUT,CONFIG_INPUT_WITH_PULLUP_PULLDOWN},
-													  [P1_7] = {MODE_IO_DIR_INPUT,CONFIG_INPUT_WITH_PULLUP_PULLDOWN},
-													  [P1_8] = {MODE_IO_DIR_INPUT,CONFIG_INPUT_WITH_PULLUP_PULLDOWN},
-													  [P1_9] = {MODE_IO_DIR_INPUT,CONFIG_INPUT_WITH_PULLUP_PULLDOWN},
+													  [P0_0] = {MODE_IO_DIR_INPUT,CONFIG_ANALOG_MODE,NO_PUPD},
+													  [P0_2] = {MODE_IO_DIR_OUTPUT_50MHZ,CONFIG_ALTERNATE_FUNCTION_OUTPUT_PUSHPULL,NO_PUPD},
+													  [P0_3] = {MODE_IO_DIR_INPUT,CONFIG_FLOATING_STATE,NO_PUPD},
+													  [P0_8] = {MODE_IO_DIR_OUTPUT_50MHZ,CONFIG_ALTERNATE_FUNCTION_OUTPUT_PUSHPULL,NO_PUPD},
+													  [P1_6] = {MODE_IO_DIR_INPUT,CONFIG_INPUT_WITH_PULLUP_PULLDOWN,PULL_UP},
+													  [P1_7] = {MODE_IO_DIR_INPUT,CONFIG_INPUT_WITH_PULLUP_PULLDOWN,PULL_UP},
+													  [P1_8] = {MODE_IO_DIR_INPUT,CONFIG_INPUT_WITH_PULLUP_PULLDOWN,PULL_UP},
+													  [P1_9] = {MODE_IO_DIR_INPUT,CONFIG_INPUT_WITH_PULLUP_PULLDOWN,PULL_UP},
 													  [P1_10] = {MODE_IO_DIR_OUTPUT_50MHZ,CONFIG_ALTERNATE_FUNCTION_OUTPUT_OPENDRAIN},
 													  [P1_11] = {MODE_IO_DIR_OUTPUT_50MHZ,CONFIG_ALTERNATE_FUNCTION_OUTPUT_OPENDRAIN},
-													  [P1_12] = {MODE_IO_DIR_INPUT,CONFIG_INPUT_WITH_PULLUP_PULLDOWN},
-													  [P1_13] = {MODE_IO_DIR_INPUT,CONFIG_INPUT_WITH_PULLUP_PULLDOWN},
+													  [P1_12] = {MODE_IO_DIR_INPUT,CONFIG_INPUT_WITH_PULLUP_PULLDOWN,PULL_UP},
+													  [P1_13] = {MODE_IO_DIR_INPUT,CONFIG_INPUT_WITH_PULLUP_PULLDOWN,PULL_UP},
 													  // Output
 													  [P1_14] = {MODE_IO_DIR_OUTPUT_10MHZ,CONFIG_GENERAL_PURPOSE_OUTPUT_PUSHPULL},
 													  [P1_15] = {MODE_IO_DIR_OUTPUT_10MHZ,CONFIG_GENERAL_PURPOSE_OUTPUT_PUSHPULL},
 													  [P2_13] = {MODE_IO_DIR_OUTPUT_10MHZ,CONFIG_GENERAL_PURPOSE_OUTPUT_PUSHPULL},
+													  [P0_4] = {MODE_IO_DIR_OUTPUT_10MHZ,CONFIG_GENERAL_PURPOSE_OUTPUT_PUSHPULL},
 													  [SPI1_SCK] = {MODE_IO_DIR_OUTPUT_50MHZ,CONFIG_ALTERNATE_FUNCTION_OUTPUT_PUSHPULL},
 													  [SPI1_MOSI] = {MODE_IO_DIR_OUTPUT_50MHZ,CONFIG_ALTERNATE_FUNCTION_OUTPUT_PUSHPULL},
-													  [SPI1_MISO] = {MODE_IO_DIR_INPUT,CONFIG_INPUT_WITH_PULLUP_PULLDOWN},
-													  [SPI1_NSS] = {MODE_IO_DIR_OUTPUT_50MHZ,CONFIG_ALTERNATE_FUNCTION_OUTPUT_PUSHPULL},
+													  [SPI1_MISO] = {MODE_IO_DIR_INPUT,CONFIG_INPUT_WITH_PULLUP_PULLDOWN,PULL_UP},
+													 //[SPI1_NSS] = {MODE_IO_DIR_OUTPUT_50MHZ,CONFIG_ALTERNATE_FUNCTION_OUTPUT_PUSHPULL},
 													  //Unused Pins
-														[IO_SENSOR_IN_TEMP] = {MODE_IO_DIR_INPUT,CONFIG_INPUT_WITH_PULLUP_PULLDOWN},
+														[IO_SENSOR_IN_TEMP] = {MODE_IO_DIR_INPUT,CONFIG_INPUT_WITH_PULLUP_PULLDOWN,PULL_UP},
 														[IO_UNUSED_5] = UNUSED_PIN_CONFIG,
-														[IO_UNUSED_6] = UNUSED_PIN_CONFIG,
-														[IO_UNUSED_7] = UNUSED_PIN_CONFIG,
+														[CAN_RX] = {MODE_IO_DIR_INPUT,CONFIG_INPUT_WITH_PULLUP_PULLDOWN,PULL_UP},
+														[CAN_TX] = {MODE_IO_DIR_OUTPUT_50MHZ,CONFIG_ALTERNATE_FUNCTION_OUTPUT_PUSHPULL},
 														[IO_UNUSED_8] = UNUSED_PIN_CONFIG,
 														[IO_UNUSED_9] = UNUSED_PIN_CONFIG,
 														[IO_UNUSED_10] = UNUSED_PIN_CONFIG,
@@ -129,13 +131,24 @@ void io_init(void)
 
 void io_config(io_e io, io_configuration *config)
 {
-	io_set_io_mode(io,config->mode,config->config);
+	io_set_io_mode(io,config->mode,config->config,config->pupd);
 }
 
-void io_set_io_mode(io_e io, io_mode_e mode, io_config_e config)
+void io_set_io_mode(io_e io, io_mode_e mode, io_config_e config,io_pull_up_down_e pupd)
 {
 	pin = io_pin_bit(io);
 	gpio_regdef_t *Port = (gpio_regdef_t*)(GPIO_BASEADDR + (io_port(io)*0x400));
+	if(config == CONFIG_INPUT_WITH_PULLUP_PULLDOWN)
+	{
+		if (pupd == PULL_UP)
+		{
+			Port->ODR |= (1 << pin);
+		}
+		else if (pupd == PULL_DOWN)
+		{
+			Port->ODR &= ~(1 << pin);
+		}
+	}
 	if (pin < 8)
 	{
 		Port->CRL &= ~(0xF << PIN_MODE_MASK);
@@ -162,6 +175,12 @@ void io_set_out(io_e io, io_out_e out)
 		Port->ODR |= (1 << io_pin_bit(io));
 		break;
 	}
+}
+
+void io_toggle(io_e io)
+{
+	gpio_regdef_t *Port = (gpio_regdef_t*)(GPIO_BASEADDR + ( io_port(io) *0x400));
+	Port->ODR ^= (1 << 13);
 }
 
 uint16_t io_get_in(io_e io)

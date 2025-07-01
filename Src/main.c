@@ -16,35 +16,43 @@
  ******************************************************************************
  */
 
-//#include <stdint.h>
+
 #include <stdio.h>
+#include <string.h>
+#include <string.h>
 #include "stm32f103x.h"
-#include "eeprom.h"
-#include "bmp280.h"
+#include "app.h"
+
 
 uint8_t temp;
 uint8_t i = 0;
-int16_t  Accel_x;
-uint8_t Bytes_to_read = 2;
-uint8_t Count_Bytes_Read = 0;
-uint8_t Flag_RepeatedStart = 0;
 
-#define LED_ON() 			io_set_out(IO_TEST_LED, HIGH);
-#define LED_OFF() 			io_set_out(IO_TEST_LED, LOW);
+
+#define LED_ON() 			io_set_out(IO_TEST_LED, HIGH)
+#define LED_OFF() 			io_set_out(IO_TEST_LED, LOW)
+#define LED_TOGGLE()        io_toggle(IO_TEST_LED)
+
+
 
 int main(void)
 {
-
-	uint8_t bmp280_id;
 	mcu_init();
-	GPIOA->ODR |= (1 << 4);
-	bmp280_id = read_id();
-	LED_OFF();
+
+	register_rx0_callback(app_rx0_handler);
+
+	sprintf(tx_buffer_data,"EMBEDDED");
+	hal_can_transmit(CAN1,&tx_buffer_data,8,0,0,0x2A);
+	for(uint32_t i = 0; i < 100000;i++);
 
 	while(1)
 	{
-
+		if (counter_led_toggle >= 1000)
+		{
+			counter_led_toggle = 0;
+			LED_TOGGLE();
+		}
 	}
+
 }
 
 

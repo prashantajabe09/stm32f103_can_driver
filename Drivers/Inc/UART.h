@@ -169,4 +169,6 @@ void usart_rx_di(usartx_regdef_t *p_usartx);
 void usart_interrupt_based_transmit(usart_handle *p_usart_handle);
 void usart_dma_mode_en_di(usartx_regdef_t *p_usartx,uint8_t en_di);
 void dma_based_usart_transmission(uint16_t tx_buffer_data_len);
+void uart_send_string(const char* s);
+void uart_sent_uint(uint32_t num);
 #endif /* INC_UART_H_ */
