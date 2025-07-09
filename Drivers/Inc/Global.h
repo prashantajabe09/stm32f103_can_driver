@@ -39,5 +39,6 @@ extern uint8_t txe_buffer[],txe_buffer_index;
 extern uint16_t counter_adc_sampling;
 extern uint16_t counter_data_transmit;
 extern uint16_t counter_led_toggle;
+extern uint32_t counter_systick;
 extern uint8_t spi_dma_based_write_complete;
 #endif /* INC_GLOBAL_H_ */

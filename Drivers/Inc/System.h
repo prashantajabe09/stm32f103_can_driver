@@ -12,4 +12,5 @@
 
 void nvic_en_irq(irqn_type irqn);
 void systick_init(void);
+uint32_t get_systick(void);
 #endif /* INC_SYSTEM_H_ */
