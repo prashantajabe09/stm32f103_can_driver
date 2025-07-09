@@ -10,7 +10,7 @@
 
 
 #include <stdint.h>
-
+#include <stdarg.h>
 
 
 
@@ -39,6 +39,8 @@
 #define SYSTICK_BASEADDR					0xE000E010
 #define CAN1_BASEADDR						0x40006400
 #define CAN2_BASEADDR						0x40006800
+#define SCB_BASEADDR						0xE000ED00
+
 #define EN	  1
 #define DI	  0
 
@@ -296,6 +298,34 @@ typedef struct{
 
 }can_regdef_t;
 
+typedef struct {
+    volatile uint32_t ACTLR;  // Offset: 0x000 - Auxiliary Control Register
+} SCnSCB_Type;
+
+#define SCnSCB ((SCnSCB_Type *)0xE000E008UL)
+
+typedef struct{
+	uint32_t CPUID;
+	uint32_t ICSR;
+	uint32_t VTOR;
+	uint32_t AIRCR;
+	uint32_t SCR;
+	uint32_t CCR;
+	uint32_t SHPR1;
+	uint32_t SHPR2;
+	uint32_t SHPR3;
+	uint32_t SHCRS;
+	uint32_t CFSR;
+	//uint32_t MMSR;
+	//uint32_t BFSR;
+	uint32_t RESERVED;
+	uint32_t HFSR;
+	uint32_t MMAR;
+	uint32_t BFAR;
+	uint32_t AFSR;
+}scb_regdef_t;
+
+#define SCB  				((scb_regdef_t*)SCB_BASEADDR)
 #define RCC					((rcc_regdef_t*)RCC_BASEADDR)
 #define GPIOA				((gpio_regdef_t*)GPIO_BASEADDR)
 #define GPIOB				((gpio_regdef_t*)0x40010C00)

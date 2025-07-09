@@ -37,3 +37,14 @@ uint32_t round_off(float number)
 
 	return (realPart + (uint32_t)carry);
 }
+
+
+void print_msg(char* format,...)
+{
+	char str[80];
+	va_list args;
+	va_start(args,format);
+	vsprintf(str,format,args);
+	usart_2_handle.tx_buffer = &(str);
+	usart_write_polling(&usart_2_handle);
+}

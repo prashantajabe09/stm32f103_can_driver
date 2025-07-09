@@ -11,4 +11,5 @@
 #include "stm32f103x.h"
 void mcu_init(void);
 uint32_t round_off(float number);
+void print_msg(char* format,...);
 #endif /* INC_COMMON_H_ */

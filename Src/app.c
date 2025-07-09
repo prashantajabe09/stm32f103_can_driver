@@ -9,24 +9,16 @@
 
 void app_rx0_handler(const can_rx_frame_t* msg)
 {
-	sprintf(tx_buffer_data,"ID: 0x%x \r\n",msg->id);
-	usart_2_handle.tx_buffer = &(tx_buffer_data);
-	usart_write_polling(&usart_2_handle);
+	print_msg("ID:0x%x \r\n",msg->id);
 
-	sprintf(tx_buffer_data,"INDEX: 0x%x \r\n",msg->filter_match_index);
-	usart_2_handle.tx_buffer = &(tx_buffer_data);
-	usart_write_polling(&usart_2_handle);
+	print_msg("INDEX:0x%x \r\n",msg->filter_match_index);
 
-	sprintf(tx_buffer_data,"Data: ");
-	usart_2_handle.tx_buffer = &(tx_buffer_data);
-	usart_write_polling(&usart_2_handle);
-	usart_2_handle.tx_buffer = &(msg->data_8[0]);
-	usart_write_polling(&usart_2_handle);
-
-	sprintf(tx_buffer_data,"\r\n");
-	usart_2_handle.tx_buffer = &(tx_buffer_data);
-	usart_write_polling(&usart_2_handle);
-
+	print_msg("Data: ");
+	for(uint8_t i = 0; i < msg->length;i++)
+	{
+		print_msg("%c",msg->data_8[i]);
+	}
+	print_msg("\r\n");
 }
 
 

@@ -19,7 +19,6 @@
 
 #include <stdio.h>
 #include <string.h>
-#include <string.h>
 #include "stm32f103x.h"
 #include "app.h"
 
@@ -36,8 +35,11 @@ uint8_t i = 0;
 
 int main(void)
 {
+	float temp = 100.0;
 	mcu_init();
 
+	uint32_t base_addr = SCB->VTOR;
+	print_msg("Base Addr: %x \r\n",base_addr);
 	register_rx0_callback(app_rx0_handler);
 
 	sprintf(tx_buffer_data,"EMBEDDED");
@@ -46,6 +48,7 @@ int main(void)
 
 	while(1)
 	{
+
 		if (counter_led_toggle >= 1000)
 		{
 			counter_led_toggle = 0;
