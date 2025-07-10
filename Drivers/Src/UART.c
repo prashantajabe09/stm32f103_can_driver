@@ -151,76 +151,45 @@ void usart_write_polling(usart_handle *p_usart_handle)
 
 void usart_read(usart_handle *p_usart_handle, uint8_t *p_data, uint16_t length,uint32_t timeout)
 {
-	uint8_t i;
 	uint32_t start = get_systick();
-	while ( (get_systick() - start) < timeout )
+	while ( ((get_systick() - start) < timeout) && length > 0 )
 	{
-		while(!(get_flag_status(p_usart_handle->add_of_usartx,USART_FLAG_RXNE)));
 
-		if (p_usart_handle->usart_configuration.data_word_length == USART_WORDLEN_9BITS)
+		while((get_flag_status(p_usart_handle->add_of_usartx,USART_FLAG_RXNE)))
 		{
-			if (p_usart_handle->usart_configuration.parity_control == USART_PARITY_DISABLE)
+			if (length-- > 0)
 			{
-				//*((uint16_t*)(p_usart_handle->rx_buffer)) = ((uint16_t*)(p_usart_handle->add_of_usartx->DR & 0x1FF));
-				*((uint16_t*)(p_data)) = (p_usart_handle->add_of_usartx->DR & 0x1FF);
-				p_data++;
-				p_data++;
-			}
-			else
-			{
-				//*(p_usart_handle->rx_buffer) = ((uint8_t*)(p_usart_handle->add_of_usartx->DR & 0xFF));
-				*(p_data) = (p_usart_handle->add_of_usartx->DR & 0xFF);
-				p_data++;
-			}
-		}
-		else if (p_usart_handle->usart_configuration.data_word_length == USART_WORDLEN_8BITS)
-		{
-			if (p_usart_handle->usart_configuration.parity_control == USART_PARITY_DISABLE)
-			{
-				//*(p_usart_handle->rx_buffer) = ((uint8_t*)(p_usart_handle->add_of_usartx->DR & 0xFF));
-				*(p_data) = (p_usart_handle->add_of_usartx->DR & 0xFF);
-				p_data++;
-			}
-			else
-			{
-				//*(p_usart_handle->rx_buffer) = ((uint8_t*)(p_usart_handle->add_of_usartx->DR & 0xFF));
-				*(p_data) = (p_usart_handle->add_of_usartx->DR & 0xFF);
-				p_data++;
-			}
-		}
-	}
-	for (i = 1;i<=(p_usart_handle->rx_len);i++)
-	{
-		while(!(get_flag_status(p_usart_handle->add_of_usartx,USART_FLAG_RXNE)));
-		if (p_usart_handle->usart_configuration.data_word_length == USART_WORDLEN_9BITS)
-		{
-			if (p_usart_handle->usart_configuration.parity_control == USART_PARITY_DISABLE)
-			{
-				//*((uint16_t*)(p_usart_handle->rx_buffer)) = ((uint16_t*)(p_usart_handle->add_of_usartx->DR & 0x1FF));
-				*((uint16_t*)(p_usart_handle->rx_buffer)) = (p_usart_handle->add_of_usartx->DR & 0x1FF);
-				p_usart_handle->rx_buffer++;
-				p_usart_handle->rx_buffer++;
-			}
-			else
-			{
-				//*(p_usart_handle->rx_buffer) = ((uint8_t*)(p_usart_handle->add_of_usartx->DR & 0xFF));
-				*(p_usart_handle->rx_buffer) = (p_usart_handle->add_of_usartx->DR & 0xFF);
-				p_usart_handle->rx_buffer++;
-			}
-		}
-		else if (p_usart_handle->usart_configuration.data_word_length == USART_WORDLEN_8BITS)
-		{
-			if (p_usart_handle->usart_configuration.parity_control == USART_PARITY_DISABLE)
-			{
-				//*(p_usart_handle->rx_buffer) = ((uint8_t*)(p_usart_handle->add_of_usartx->DR & 0xFF));
-				*(p_usart_handle->rx_buffer) = (p_usart_handle->add_of_usartx->DR & 0xFF);
-				p_usart_handle->rx_buffer++;
-			}
-			else
-			{
-				//*(p_usart_handle->rx_buffer) = ((uint8_t*)(p_usart_handle->add_of_usartx->DR & 0xFF));
-				*(p_usart_handle->rx_buffer) = (p_usart_handle->add_of_usartx->DR & 0xFF);
-				p_usart_handle->rx_buffer++;
+				if (p_usart_handle->usart_configuration.data_word_length == USART_WORDLEN_9BITS)
+				{
+					if (p_usart_handle->usart_configuration.parity_control == USART_PARITY_DISABLE)
+					{
+						//*((uint16_t*)(p_usart_handle->rx_buffer)) = ((uint16_t*)(p_usart_handle->add_of_usartx->DR & 0x1FF));
+						*((uint16_t*)(p_data)) = (p_usart_handle->add_of_usartx->DR & 0x1FF);
+						p_data++;
+						p_data++;
+					}
+					else
+					{
+						//*(p_usart_handle->rx_buffer) = ((uint8_t*)(p_usart_handle->add_of_usartx->DR & 0xFF));
+						*(p_data) = (p_usart_handle->add_of_usartx->DR & 0xFF);
+						p_data++;
+					}
+				}
+				else if (p_usart_handle->usart_configuration.data_word_length == USART_WORDLEN_8BITS)
+				{
+					if (p_usart_handle->usart_configuration.parity_control == USART_PARITY_DISABLE)
+					{
+						//*(p_usart_handle->rx_buffer) = ((uint8_t*)(p_usart_handle->add_of_usartx->DR & 0xFF));
+						*(p_data) = (p_usart_handle->add_of_usartx->DR & 0xFF);
+						p_data++;
+					}
+					else
+					{
+						//*(p_usart_handle->rx_buffer) = ((uint8_t*)(p_usart_handle->add_of_usartx->DR & 0xFF));
+						*(p_data) = (p_usart_handle->add_of_usartx->DR & 0xFF);
+						p_data++;
+					}
+				}
 			}
 		}
 	}

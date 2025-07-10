@@ -151,7 +151,7 @@ extern usart_handle usart_2_handle;
 void uart_x_configure_parameter(usart_handle *p_usart_handle);
 void usart_init(usart_handle *p_usart_handle);
 void usart_write_polling(usart_handle *p_usart_handle);
-void usart_read(usart_handle *p_usart_handle);
+void usart_read(usart_handle *p_usart_handle, uint8_t *p_data, uint16_t length,uint32_t timeout);
 void usart_en(usartx_regdef_t *p_usartx);
 void usart_set_baudrate(usartx_regdef_t *p_usartx,uint32_t baudrate);
 void config_stop_bit(usartx_regdef_t *p_usartx, uint8_t stop_bits);

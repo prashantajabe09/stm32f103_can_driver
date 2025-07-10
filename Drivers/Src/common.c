@@ -9,6 +9,7 @@
 void mcu_init(void)
 {
 	clock_init();
+	SCB->VTOR = 0x08004000;
 	io_init();
 
 	uart_x_configure_parameter(&usart_2_handle);

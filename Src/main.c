@@ -26,7 +26,8 @@
 uint8_t temp;
 uint8_t i = 0;
 
-
+#define HIGH 1
+#define LOW  0
 #define LED_ON() 			io_set_out(IO_TEST_LED, HIGH)
 #define LED_OFF() 			io_set_out(IO_TEST_LED, LOW)
 #define LED_TOGGLE()        io_toggle(IO_TEST_LED)
@@ -42,12 +43,20 @@ int main(void)
 	print_msg("Base Addr: %x \r\n",base_addr);
 	register_rx0_callback(app_rx0_handler);
 
-	sprintf(tx_buffer_data,"EMBEDDED");
-	hal_can_transmit(CAN1,&tx_buffer_data,8,0,0,0x2A);
+	//sprintf(tx_buffer_data,"EMBEDDED");
+	//hal_can_transmit(CAN1,&tx_buffer_data,8,0,0,0x2A);
 	for(uint32_t i = 0; i < 100000;i++);
 
 	while(1)
 	{
+//		LED_OFF();
+//		for(uint32_t i = 0; i < 100000;i++);
+//		LED_ON();
+//		//usart_read(&usart_2_handle,rx_buffer_data,5,10000);
+//		for (uint8_t i; i < 5;i++)
+//		{
+//			print_msg("received data:%d",rx_buffer_data[i]);
+//		}
 
 		if (counter_led_toggle >= 1000)
 		{

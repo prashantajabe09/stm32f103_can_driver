@@ -10,6 +10,7 @@
 uint16_t counter_adc_sampling;
 uint16_t counter_data_transmit;
 uint16_t counter_led_toggle;
+uint32_t count_systick;
 void nvic_en_irq(irqn_type irqn)
 {
 	uint8_t register_position = irqn / 32;
@@ -34,4 +35,10 @@ void SysTick_Handler(void)
 	counter_adc_sampling++;
 	counter_data_transmit++;
 	counter_led_toggle++;
+	count_systick++;
+}
+
+uint32_t get_systick(void)
+{
+	return count_systick;
 }
