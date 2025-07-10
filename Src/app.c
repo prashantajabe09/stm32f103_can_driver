@@ -22,3 +22,12 @@ void app_rx0_handler(const can_rx_frame_t* msg)
 }
 
 
+void app_uart_rx_handler(uint8_t* rx_data)
+{
+	while(*rx_data != 0)
+	{
+		print_msg("%c",*rx_data++);
+	}
+	print_msg("\r\n");
+}
+

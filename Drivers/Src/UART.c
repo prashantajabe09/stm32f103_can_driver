@@ -23,6 +23,8 @@ uint16_t logic_counter3 = 0;
 uint16_t logic_counter4 = 0;
 uint16_t logic_counter5 = 0;
 
+static uart_callback_t callback_rx_data = 0;
+
 void uart_x_configure_parameter(usart_handle *p_usart_handle)
 {
 	p_usart_handle->add_of_usartx = USART2;
@@ -154,11 +156,13 @@ void usart_read(usart_handle *p_usart_handle, uint8_t *p_data, uint16_t length,u
 	uint32_t start = get_systick();
 	while ( ((get_systick() - start) < timeout) && length > 0 )
 	{
-
 		while((get_flag_status(p_usart_handle->add_of_usartx,USART_FLAG_RXNE)))
 		{
+			print_msg("overrun status: %d",p_usart_handle->add_of_usartx->SR);
+			print_msg("RXNE SET \r\n");
 			if (length-- > 0)
 			{
+				print_msg("length:%d",length);
 				if (p_usart_handle->usart_configuration.data_word_length == USART_WORDLEN_9BITS)
 				{
 					if (p_usart_handle->usart_configuration.parity_control == USART_PARITY_DISABLE)
@@ -262,15 +266,21 @@ void usart_write_interrupt(usartx_regdef_t *p_usartx)
 	nvic_en_irq(USART2_Global_IRQn);
 }
 
-void usart_read_interrupt(usartx_regdef_t *p_usartx)
+void usart_read_interrupt(usart_handle *p_usart_handle,uint8_t *p_data, uint8_t size)
 {
 	// init the interrupt at usart level
-	p_usartx->CR1 |= (1 << USART_CR1_RXNE_INTERRUPT_EN);// | (1 << USART_CR1_TC_INTERRUPT_EN) );
+	p_usart_handle->rx_buffer = p_data;
+	p_usart_handle->rx_len = size;
+	p_usart_handle->add_of_usartx->CR1 |= (1 << USART_CR1_RXNE_INTERRUPT_EN);// | (1 << USART_CR1_TC_INTERRUPT_EN) );
 	// init the interrupt at NVIC level. TO DO: Implement the function for this
 	nvic_en_irq(USART2_Global_IRQn);
 
 }
 
+void register_uart_callback(uart_callback_t callback)
+{
+	callback_rx_data = callback;
+}
 
 void usart_interrupt_handling(usart_handle *p_usart_handle)
 {
@@ -358,6 +368,7 @@ void usart_interrupt_handling(usart_handle *p_usart_handle)
 		else if (p_usart_handle->rx_len == 0)
 		{
 			p_usart_handle->add_of_usartx->CR1 &= ~(1 << USART_CR1_RXNE_INTERRUPT_EN);
+			callback_rx_data();
 		}
 	}
 }

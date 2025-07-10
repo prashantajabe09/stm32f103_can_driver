@@ -147,7 +147,9 @@ extern usart_handle usart_2_handle;
 
 #define STOP_BIT_MASK()			(0X03 << USART_CR2_STOP_BIT)
 
+typedef void (*uart_callback_t)(uint8_t* rx_data);
 
+void register_uart_callback(uart_callback_t callback);
 void uart_x_configure_parameter(usart_handle *p_usart_handle);
 void usart_init(usart_handle *p_usart_handle);
 void usart_write_polling(usart_handle *p_usart_handle);
@@ -160,7 +162,7 @@ void config_parity(usartx_regdef_t *p_usartx, uint8_t parity_type);
 void config_mode(usartx_regdef_t *p_usartx, uint8_t mode);
 uint8_t get_flag_status(usartx_regdef_t *p_usartx, uint8_t flag);
 void usart_write_interrupt(usartx_regdef_t *p_usartx);
-void usart_read_interrupt(usartx_regdef_t *p_usartx);
+void usart_read_interrupt(usart_handle *p_usart_handle,uint8_t *p_data, uint8_t size);
 void usart_interrupt_handling(usart_handle *p_usart_handle);
 void usart_tx_en(usartx_regdef_t *p_usartx);
 void usart_rx_en(usartx_regdef_t *p_usartx);

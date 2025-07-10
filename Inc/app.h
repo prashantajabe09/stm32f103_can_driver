@@ -11,5 +11,6 @@
 #include "stm32f103x.h"
 
 void app_rx0_handler(const can_rx_frame_t* msg);
+void app_uart_rx_handler(uint8_t* rx_data);
 
 #endif /* APP_H_ */

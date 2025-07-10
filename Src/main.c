@@ -42,18 +42,19 @@ int main(void)
 	uint32_t base_addr = SCB->VTOR;
 	print_msg("Base Addr: %x \r\n",base_addr);
 	register_rx0_callback(app_rx0_handler);
+	register_uart_callback(app_uart_rx_handler);
 
 	//sprintf(tx_buffer_data,"EMBEDDED");
 	//hal_can_transmit(CAN1,&tx_buffer_data,8,0,0,0x2A);
 	for(uint32_t i = 0; i < 100000;i++);
-
+	usart_read_interrupt(&usart_2_handle,rx_buffer_data,5);
 	while(1)
 	{
 //		LED_OFF();
-//		for(uint32_t i = 0; i < 100000;i++);
+//		for(uint32_t i = 0; i < 1000000;i++);
 //		LED_ON();
-//		//usart_read(&usart_2_handle,rx_buffer_data,5,10000);
-//		for (uint8_t i; i < 5;i++)
+//		usart_read(&usart_2_handle,rx_buffer_data,5,100000);
+//		for (uint8_t i = 0; i < 5;i++)
 //		{
 //			print_msg("received data:%d",rx_buffer_data[i]);
 //		}
