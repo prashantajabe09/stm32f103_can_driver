@@ -10,8 +10,8 @@
 /*
  * Structure of Parameters required for system clock setting
  */
-struct domain_clock_setting clock_setting = {PLL,PLL_IN_X_8,PLL_HSI_DIV_2,SYSCLK_NOT_DIV,HCLK_DIV_2,HCLK_NOT_DIV};
-//struct domain_clock_setting clock_setting = {HSI,PLL_IN_X_3,PLL_HSI_DIV_2,SYSCLK_NOT_DIV,HCLK_NOT_DIV,HCLK_NOT_DIV};
+struct domain_clock_setting clock_setting = {HSI,PLL_IN_X_12,PLL_HSI_DIV_2,SYSCLK_NOT_DIV,HCLK_NOT_DIV,HCLK_NOT_DIV};
+
 
 /*
  * Pointer to system clock parameter structure

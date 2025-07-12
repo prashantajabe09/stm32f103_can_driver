@@ -17,7 +17,9 @@
 #define  USART_8BIT 	~(1 << 12)
 #define  USART_9BIT		(1 << 12)
 
-
+extern uint16_t count_interrupt_enterred;
+extern uint16_t arr_length[6];
+extern uint16_t count_ovr;
 
 /*
  * Bit Position Macros

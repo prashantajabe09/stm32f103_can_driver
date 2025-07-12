@@ -26,6 +26,7 @@
 uint8_t temp;
 uint8_t i = 0;
 
+
 #define HIGH 1
 #define LOW  0
 #define LED_ON() 			io_set_out(IO_TEST_LED, HIGH)
@@ -37,6 +38,7 @@ uint8_t i = 0;
 int main(void)
 {
 	float temp = 100.0;
+	uint8_t i = 0;
 	mcu_init();
 
 	uint32_t base_addr = SCB->VTOR;
@@ -47,16 +49,26 @@ int main(void)
 	//sprintf(tx_buffer_data,"EMBEDDED");
 	//hal_can_transmit(CAN1,&tx_buffer_data,8,0,0,0x2A);
 	//for(uint32_t i = 0; i < 100000;i++);
-	usart_read_interrupt(&usart_2_handle,rx_buffer_data,5);
+	//usart_read_interrupt(&usart_2_handle,rx_buffer_data,5);
 	while(1)
 	{
+////		if (io_get_in(PUSH_BUTTON) == LOW)
+////		{
+////			print_msg("interrupt_count: %d \r\n",count_interrupt_enterred);
+////			print_msg("ovr_count: %d \r\n",count_ovr);
+////			for (i = 0; i < 6;i++)
+////			{
+////				print_msg("len:%d %d \r\n",i,arr_length[i]);
+////			}
+////
+////		}
 //		LED_OFF();
 //		for(uint32_t i = 0; i < 1000000;i++);
 //		LED_ON();
 //		usart_read(&usart_2_handle,rx_buffer_data,5,100000);
 //		for (uint8_t i = 0; i < 5;i++)
 //		{
-//			print_msg("received data:%d",rx_buffer_data[i]);
+//			print_msg("received data:%d \r\n",rx_buffer_data[i]);
 //		}
 
 		if (counter_led_toggle >= 1000)

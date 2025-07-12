@@ -46,7 +46,7 @@ typedef enum
 	IO_UNUSED_8 			= P0_13,
 	IO_UNUSED_9 			= P0_14,
 	IO_UNUSED_10 			= P0_15,
-	IO_UNUSED_11			= P1_0,
+	PUSH_BUTTON				= P1_0,
 	IO_UNUSED_12			= P1_1,
 	IO_UNUSED_13			= P1_2,
 	IO_UNUSED_14			= P1_3,

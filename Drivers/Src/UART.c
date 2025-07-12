@@ -15,6 +15,9 @@ uint16_t rx_buffer_data_len = 0;
 uint8_t tc_buffer[80],tc_buffer_index;
 uint8_t txe_buffer[80],txe_buffer_index;
 usart_handle usart_2_handle;
+uint16_t count_interrupt_enterred;
+uint16_t arr_length[6];
+uint16_t count_ovr;
 uint8_t tc_counter = 0;
 uint8_t txe_counter = 0;
 uint16_t logic_counter1 = 0;
@@ -31,7 +34,7 @@ void uart_x_configure_parameter(usart_handle *p_usart_handle)
 	//USART2Handle.Usart_Configuration.Mode = USART_MODE_TXRX;
 	p_usart_handle->usart_configuration.no_of_stop_bits = USART_STOPBITS_1;
 	p_usart_handle->usart_configuration.data_word_length = USART_WORDLEN_8BITS;
-	p_usart_handle->usart_configuration.baudrate = USART_STD_BAUD_38400;
+	p_usart_handle->usart_configuration.baudrate = USART_STD_BAUD_9600;
 	p_usart_handle->usart_configuration.parity_control = USART_PARITY_DISABLE;
 	//p_usart_handle->usart_configuration.dma_transmitter_en = USARTx_DMA_TRANSMITTER_EN;
 	//p_usart_handle->usart_configuration.dma_receiver_en = USARTx_DMA_RECEIVER_EN;
@@ -158,11 +161,10 @@ void usart_read(usart_handle *p_usart_handle, uint8_t *p_data, uint16_t length,u
 	{
 		while((get_flag_status(p_usart_handle->add_of_usartx,USART_FLAG_RXNE)))
 		{
-			print_msg("overrun status: %d",p_usart_handle->add_of_usartx->SR);
-			print_msg("RXNE SET \r\n");
+
 			if (length-- > 0)
 			{
-				print_msg("length:%d",length);
+				//print_msg("length:%d",length);
 				if (p_usart_handle->usart_configuration.data_word_length == USART_WORDLEN_9BITS)
 				{
 					if (p_usart_handle->usart_configuration.parity_control == USART_PARITY_DISABLE)
@@ -330,10 +332,37 @@ void usart_interrupt_handling(usart_handle *p_usart_handle)
 	}
 	if (get_flag_status(p_usart_handle->add_of_usartx,USART_FLAG_RXNE) == 1)
 	{
-		print_msg("E");
-		print_msg("%x",p_usart_handle->add_of_usartx->SR);
+		count_interrupt_enterred = count_interrupt_enterred + 1;
+		if ((p_usart_handle->add_of_usartx->SR >> 3) & 0x01)
+		{
+			count_ovr = count_ovr + 1;
+		}
 		if (p_usart_handle->rx_len > 0)
 		{
+			if (p_usart_handle->rx_len == 5)
+			{
+				arr_length[5] = arr_length[5] + 1;
+			}
+			else if (p_usart_handle->rx_len == 4)
+			{
+				arr_length[4] = arr_length[4] + 1;
+			}
+			else if (p_usart_handle->rx_len == 3)
+			{
+				arr_length[3] = arr_length[3] + 1;
+			}
+			else if (p_usart_handle->rx_len == 2)
+			{
+				arr_length[2] = arr_length[2] + 1;
+			}
+			else if (p_usart_handle->rx_len == 1)
+			{
+				arr_length[1] = arr_length[1] + 1;
+			}
+			else if (p_usart_handle->rx_len == 0)
+			{
+				arr_length[0] = arr_length[0] + 1;
+			}
 			if (p_usart_handle->usart_configuration.data_word_length == USART_WORDLEN_9BITS)
 			{
 				if (p_usart_handle->usart_configuration.parity_control == USART_PARITY_DISABLE)
@@ -366,12 +395,18 @@ void usart_interrupt_handling(usart_handle *p_usart_handle)
 					p_usart_handle->rx_buffer++;
 				}
 			}
+
+			if (p_usart_handle->rx_len == 0)
+			{
+				p_usart_handle->add_of_usartx->CR1 &= ~(1 << USART_CR1_RXNE_INTERRUPT_EN);
+				callback_rx_data(rx_buffer_data);
+			}
 		}
-		else if (p_usart_handle->rx_len == 0)
-		{
-			p_usart_handle->add_of_usartx->CR1 &= ~(1 << USART_CR1_RXNE_INTERRUPT_EN);
-			callback_rx_data(rx_buffer_data);
-		}
+//		else if (p_usart_handle->rx_len == 0)
+//		{
+//			p_usart_handle->add_of_usartx->CR1 &= ~(1 << USART_CR1_RXNE_INTERRUPT_EN);
+//			callback_rx_data(rx_buffer_data);
+//		}
 	}
 }
 
