@@ -31,7 +31,7 @@ void uart_x_configure_parameter(usart_handle *p_usart_handle)
 	//USART2Handle.Usart_Configuration.Mode = USART_MODE_TXRX;
 	p_usart_handle->usart_configuration.no_of_stop_bits = USART_STOPBITS_1;
 	p_usart_handle->usart_configuration.data_word_length = USART_WORDLEN_8BITS;
-	p_usart_handle->usart_configuration.baudrate = USART_STD_BAUD_9600;
+	p_usart_handle->usart_configuration.baudrate = USART_STD_BAUD_38400;
 	p_usart_handle->usart_configuration.parity_control = USART_PARITY_DISABLE;
 	//p_usart_handle->usart_configuration.dma_transmitter_en = USARTx_DMA_TRANSMITTER_EN;
 	//p_usart_handle->usart_configuration.dma_receiver_en = USARTx_DMA_RECEIVER_EN;
@@ -330,6 +330,8 @@ void usart_interrupt_handling(usart_handle *p_usart_handle)
 	}
 	if (get_flag_status(p_usart_handle->add_of_usartx,USART_FLAG_RXNE) == 1)
 	{
+		print_msg("E");
+		print_msg("%x",p_usart_handle->add_of_usartx->SR);
 		if (p_usart_handle->rx_len > 0)
 		{
 			if (p_usart_handle->usart_configuration.data_word_length == USART_WORDLEN_9BITS)
@@ -368,7 +370,7 @@ void usart_interrupt_handling(usart_handle *p_usart_handle)
 		else if (p_usart_handle->rx_len == 0)
 		{
 			p_usart_handle->add_of_usartx->CR1 &= ~(1 << USART_CR1_RXNE_INTERRUPT_EN);
-			callback_rx_data();
+			callback_rx_data(rx_buffer_data);
 		}
 	}
 }

@@ -10,7 +10,8 @@
 /*
  * Structure of Parameters required for system clock setting
  */
-struct domain_clock_setting clock_setting = {HSI,PLL_IN_X_3,PLL_HSI_DIV_2,SYSCLK_NOT_DIV,HCLK_NOT_DIV,HCLK_NOT_DIV};
+struct domain_clock_setting clock_setting = {PLL,PLL_IN_X_8,PLL_HSI_DIV_2,SYSCLK_NOT_DIV,HCLK_DIV_2,HCLK_NOT_DIV};
+//struct domain_clock_setting clock_setting = {HSI,PLL_IN_X_3,PLL_HSI_DIV_2,SYSCLK_NOT_DIV,HCLK_NOT_DIV,HCLK_NOT_DIV};
 
 /*
  * Pointer to system clock parameter structure
@@ -255,7 +256,7 @@ void ahb_peripheral_clock_en(uint32_t clock_en_parameter)
 uint32_t apb_get_clock(uint8_t apb)
 {
 	uint8_t clock_source;
-	uint32_t sysclk, temp, ahbp, apbp;
+	uint32_t sysclk, temp,temp2, ahbp, apbp;
 
 	clock_source = ((RCC->CFGR >> 2) & 0x03);
 	if (clock_source == SYSCLK_SOURCE_HSI)
@@ -293,7 +294,7 @@ uint32_t apb_get_clock(uint8_t apb)
 	 */
 	if (apb == APB1)
 	{
-		temp = ((RCC->CFGR >> 10) && 0x7);
+		temp = ( (RCC->CFGR >> 8) & 0x7);
 		if (temp < 4)
 		{
 			apbp = 1;
@@ -309,7 +310,7 @@ uint32_t apb_get_clock(uint8_t apb)
 	 */
 	if (apb == APB2)
 	{
-		temp = ((RCC->CFGR >> 13) && 0x7);
+		temp = ((RCC->CFGR >> 11) & 0x7);
 		if (temp < 4)
 		{
 			apbp = 1;

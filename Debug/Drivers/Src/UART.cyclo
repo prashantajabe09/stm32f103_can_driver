@@ -16,10 +16,10 @@
 ../Drivers/Src/UART.c:269:6:usart_read_interrupt	1
 ../Drivers/Src/UART.c:280:6:register_uart_callback	1
 ../Drivers/Src/UART.c:285:6:usart_interrupt_handling	15
-../Drivers/Src/UART.c:376:6:usart_tx_en	1
-../Drivers/Src/UART.c:381:6:usart_rx_en	1
-../Drivers/Src/UART.c:386:6:usart_tx_di	1
-../Drivers/Src/UART.c:391:6:usart_rx_di	1
-../Drivers/Src/UART.c:396:6:usart_dma_mode_en_di	5
-../Drivers/Src/UART.c:414:6:dma_based_usart_transmission	1
-../Drivers/Src/UART.c:425:6:USART2_IRQHandler	1
+../Drivers/Src/UART.c:378:6:usart_tx_en	1
+../Drivers/Src/UART.c:383:6:usart_rx_en	1
+../Drivers/Src/UART.c:388:6:usart_tx_di	1
+../Drivers/Src/UART.c:393:6:usart_rx_di	1
+../Drivers/Src/UART.c:398:6:usart_dma_mode_en_di	5
+../Drivers/Src/UART.c:416:6:dma_based_usart_transmission	1
+../Drivers/Src/UART.c:427:6:USART2_IRQHandler	1

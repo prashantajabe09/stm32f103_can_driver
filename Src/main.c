@@ -46,7 +46,7 @@ int main(void)
 
 	//sprintf(tx_buffer_data,"EMBEDDED");
 	//hal_can_transmit(CAN1,&tx_buffer_data,8,0,0,0x2A);
-	for(uint32_t i = 0; i < 100000;i++);
+	//for(uint32_t i = 0; i < 100000;i++);
 	usart_read_interrupt(&usart_2_handle,rx_buffer_data,5);
 	while(1)
 	{
